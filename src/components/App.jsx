@@ -7,19 +7,22 @@ import css from './App.module.css';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-      { id: 'id-5', name: 'John Doe', number: '123-45-67' },
-      { id: 'id-6', name: 'Alice Johnson', number: '987-65-43' },
-      { id: 'id-7', name: 'Bob Smith', number: '555-55-55' },
-      { id: 'id-8', name: 'Emma Brown', number: '888-88-88' },
-      { id: 'id-9', name: 'James Wilson', number: '999-99-99' },
-    ],
+    contacts: [{ id: 'id-1', name: 'Example Contact', number: '123-456-789' }],
     filter: '',
   };
+
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    if (contacts) {
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   handleAddContact = (name, number, resetForm) => {
     const { contacts } = this.state;
